@@ -1,4 +1,10 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  integer,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -58,4 +64,23 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at").$defaultFn(
     () => /* @__PURE__ */ new Date(),
   ),
+});
+
+export const categories = pgTable("categories", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+});
+
+export const products = pgTable("products", {
+  id: text("id").primaryKey(),
+  productname: text("product_name").notNull(),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
+  category: text("category_id")
+    .notNull()
+    .references(() => categories.id, { onDelete: "cascade" }),
+  price: integer("price").notNull(),
+  // This is the url to the preview image
+  previewUrl: text("preview_url"),
+  productDescription: text("product_description"),
 });

@@ -45,10 +45,10 @@ export function SignUpView() {
     trpc.auth.sign_up.mutationOptions({
       onError(error) {
         setErrorMessage(error.message);
-        router.push("/");
       },
       onSuccess() {
         toast.success("Your Account was created successfully");
+        router.push("/");
       },
     }),
   );
@@ -116,7 +116,7 @@ export function SignUpView() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <div className="relative">
+                    <div className="relative flex items-center">
                       <FormControl>
                         <Input
                           {...field}
@@ -143,7 +143,7 @@ export function SignUpView() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cofirm Password</FormLabel>
-                    <div className="relative">
+                    <div className="relative flex items-center">
                       <FormControl>
                         <Input
                           {...field}

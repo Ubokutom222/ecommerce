@@ -18,10 +18,11 @@ import { useSession } from "../providers/SessionProvider";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function Navbar() {
   const isMobile = useIsMobile();
-  const { session } = useSession();
+  const { session, isLoading } = useSession();
 
   if (isMobile) {
     return (
@@ -31,13 +32,13 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center h-full">
-          {session ? (
+          {session && !isLoading && (
             <div className="flex flex-row space-x-5">
               <Button variant="secondary" size="icon">
                 <ShoppingCart />
               </Button>
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center space-x-3 flex0row">
+                <DropdownMenuTrigger className="flex items-center space-x-3 flex-row">
                   <UserCircle />
                   Account
                 </DropdownMenuTrigger>
@@ -46,24 +47,33 @@ export function Navbar() {
                   My Account
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Favourites</DropdownMenuItem>
-                <DropdownMenuItem>Wishlist</DropdownMenuItem>
-                <DropdownMenuItem>Orders</DropdownMenuItem>
-                <DropdownMenuItem>Transaction History</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {/* TODO: Sign-out functionality */}
-                <DropdownMenuItem className="text-destructive">
-                  <LogOutIcon />
-                  Log Out
-                </DropdownMenuItem>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Favourites</DropdownMenuItem>
+                  <DropdownMenuItem>Wishlist</DropdownMenuItem>
+                  <DropdownMenuItem>Orders</DropdownMenuItem>
+                  <DropdownMenuItem>Transaction History</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {/* TODO: Sign-out functionality */}
+                  <DropdownMenuItem className="text-destructive">
+                    <LogOutIcon />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          ) : (
+          )}
+          {!session && !isLoading && (
             <Button asChild>
               <Link href="/sign-in" prefetch>
                 Sign in
               </Link>
             </Button>
+          )}
+          {isLoading && (
+            <div className="flex flex-row items-center h-full space-x-3">
+              <Skeleton className="size-9" />
+              <Skeleton className="h-9 w-12" />
+            </div>
           )}
           <SidebarTrigger />
         </div>
@@ -86,7 +96,7 @@ export function Navbar() {
         </NavigationMenu>
       </div>
       <div className="flex items-center h-full">
-        {session ? (
+        {session && !isLoading && (
           <div className="flex flex-row space-x-5">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex flex-row items-center space-x-3">
@@ -122,12 +132,19 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-        ) : (
+        )}
+        {!session && !isLoading && (
           <Button asChild>
             <Link href="/sign-in" prefetch>
               Sign In
             </Link>
           </Button>
+        )}
+        {isLoading && (
+          <div className="flex flex-row items-center h-full space-x-5">
+            <Skeleton className="w-12 px-4 py-2 h-9" />
+            <Skeleton className="w-12 px-4 py-2 h-9" />
+          </div>
         )}
       </div>
     </div>
