@@ -29,7 +29,7 @@ export function ProductCard({ product }: Props) {
     >
       <CardContent className="flex flex-col space-y-4">
         <Image
-          alt={product.productname}
+          alt={product.productName}
           src={product.previewUrl ?? "https://placehold.co/400.png"}
           className="flex-1 w-full h-auto"
           layout="responsive"
@@ -51,7 +51,7 @@ export function ProductCard({ product }: Props) {
           </HoverCard>
         </div>
         <CardTitle className="w-full hover:underline text-wrap">
-          <Link href={`/product/${product.id}`}>{product.productname}</Link>
+          <Link href={`/products/${product.id}`}>{product.productName}</Link>
         </CardTitle>
         {/* TODO: Implement review functionality */}
         <div className="flex justify-start w-full">Reviews</div>

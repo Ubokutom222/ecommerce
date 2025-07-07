@@ -73,9 +73,13 @@ export const categories = pgTable("categories", {
 
 export const products = pgTable("products", {
   id: text("id").primaryKey(),
-  productname: text("product_name").notNull(),
-  createdAt: timestamp("created_at").notNull(),
-  updatedAt: timestamp("updated_at").notNull(),
+  productName: text("product_name").notNull(),
+  createdAt: timestamp("created_at")
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$defaultFn(() => new Date()),
   category: text("category_id")
     .notNull()
     .references(() => categories.id, { onDelete: "cascade" }),
@@ -83,4 +87,19 @@ export const products = pgTable("products", {
   // This is the url to the preview image
   previewUrl: text("preview_url"),
   productDescription: text("product_description"),
+  // This stores the RichText Description rendered on the product page
+  description: text("desription"), // store as string (HTML)
+});
+
+export const adminUsers = pgTable("admin_users", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull().unique(),
+  password: text("password").notNull().unique(),
+  createdAt: timestamp("created_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
+  updatedAt: timestamp("updated_at")
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull(),
 });

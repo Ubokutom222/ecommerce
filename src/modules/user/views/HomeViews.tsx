@@ -26,8 +26,8 @@ export function HomeView() {
           <CollapsibleContent>The Filters</CollapsibleContent>
         </Collapsible>
         <div className="grid flex-1 w-full h-full grid-cols-1 gap-6 p-6 overflow-y-scroll">
-          {data.map((product, index) => (
-            <ProductCard key={index} product={product} />
+          {data.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
@@ -38,8 +38,8 @@ export function HomeView() {
       {/* TODO: HANDLE PRODUCT FILTERING FROM QUERIES */}
       <div className="h-full col-span-1">Filters</div>
       <div className="grid grid-cols-3 col-span-3 gap-3 overflow-y-scroll">
-        {data.map((product, index) => (
-          <ProductCard key={index} product={product} />
+        {data.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
