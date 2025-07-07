@@ -26,7 +26,7 @@ export function Navbar() {
 
   if (isMobile) {
     return (
-      <div className="flex flex-row items-center justify-between w-screen h-16 text-base fixed top-0 left-0 right-0">
+      <div className="flex flex-row items-center justify-between w-screen h-16 text-base fixed top-0 left-0 right-0 z-20">
         <div className="flex flex-row h-full">
           <h1 className="text-2xl font-bold">BuildWebWithKT</h1>
         </div>

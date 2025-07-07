@@ -142,7 +142,7 @@ export function SignUpView() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Cofirm Password</FormLabel>
+                    <FormLabel>Confirm Password</FormLabel>
                     <div className="relative flex items-center">
                       <FormControl>
                         <Input
