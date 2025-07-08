@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { authClient } from "@/lib/auth-client";
 
 export function Navbar() {
   const isMobile = useIsMobile();
@@ -34,8 +35,10 @@ export function Navbar() {
         <div className="flex items-center h-full">
           {session && !isLoading && (
             <div className="flex flex-row space-x-5">
-              <Button variant="secondary" size="icon">
-                <ShoppingCart />
+              <Button variant="secondary" size="icon" asChild>
+                <Link href="/cart" prefetch>
+                  <ShoppingCart />
+                </Link>
               </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center space-x-3 flex-row">
@@ -98,16 +101,17 @@ export function Navbar() {
       <div className="flex items-center h-full">
         {session && !isLoading && (
           <div className="flex flex-row space-x-5">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row items-center space-x-3">
+            <Button
+              className="flex flex-row items-center space-x-3"
+              variant="link"
+              asChild
+            >
+              <Link href="/cart" prefetch>
                 <ShoppingCart />
-                {/* Mock number */}
+                {/* TODO: IMPLEMENT CART FUNCTIONALITY */}
                 &#8358; 25,000
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>No products found</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </Link>
+            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger className="flex flex-row items-center space-x-3">
                 <UserCircle />
@@ -125,7 +129,13 @@ export function Navbar() {
                 <DropdownMenuItem>Transaction History</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 {/* TODO: Sign out functionality */}
-                <DropdownMenuItem className="text-destructive">
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={async () => {
+                    await authClient.signOut();
+                    window.location.reload();
+                  }}
+                >
                   <LogOutIcon />
                   Log Out
                 </DropdownMenuItem>

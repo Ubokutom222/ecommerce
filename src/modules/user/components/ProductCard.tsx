@@ -13,6 +13,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { useModal } from "@/lib/providers/ModalProvider";
 
 interface Props {
   product: InferSelectModel<typeof products>;
@@ -20,6 +21,7 @@ interface Props {
 
 export function ProductCard({ product }: Props) {
   const isMobile = useIsMobile();
+  const { showModal } = useModal();
   return (
     <Card
       className={cn(
@@ -58,7 +60,17 @@ export function ProductCard({ product }: Props) {
         <div className="flex flex-row items-center justify-between">
           <CardTitle>&#8358; {product.price / 100}</CardTitle>
           {/* TODO: Add Cart Functionality */}
-          <Button onClick={() => {}}>Add To Cart</Button>
+          <Button
+            onClick={() => {
+              showModal({
+                productId: product.id,
+                productname: product.productName,
+                type: "ATC",
+              });
+            }}
+          >
+            Add To Cart
+          </Button>
         </div>
       </CardContent>
     </Card>
