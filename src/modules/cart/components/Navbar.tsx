@@ -131,7 +131,7 @@ export function Navbar() {
                 <DropdownMenuItem
                   className="text-destructive"
                   onClick={async () => {
-                    await authClient.signOut();
+                    authClient.signOut();
                     window.location.reload();
                   }}
                 >

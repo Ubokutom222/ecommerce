@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Heart, ShoppingCart } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import DOMPurify from "dompurify";
+import { useModal } from "@/lib/providers/ModalProvider";
 interface Props {
   productsId: string;
 }
 export function ProductPageView({ productsId }: Props) {
   const trpc = useTRPC();
+  const { showModal } = useModal();
   const { data } = useSuspenseQuery(
     trpc.products.getProductInfo.queryOptions({
       productId: productsId,
@@ -48,7 +50,16 @@ export function ProductPageView({ productsId }: Props) {
             <Heart />
             Add To Favourite
           </Button>
-          <Button variant="default">
+          <Button
+            variant="default"
+            onClick={() => {
+              showModal({
+                productId: data[0].products.id,
+                productname: data[0].products.productName,
+                type: "ATC",
+              });
+            }}
+          >
             <ShoppingCart />
             Add To Cart
           </Button>

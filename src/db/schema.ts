@@ -4,6 +4,8 @@ import {
   timestamp,
   boolean,
   integer,
+  pgEnum,
+  unique,
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -95,7 +97,7 @@ export const adminUsers = pgTable("admin_users", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  password: text("password").notNull().unique(),
+  password: text("password").notNull(),
   createdAt: timestamp("created_at")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
@@ -103,3 +105,27 @@ export const adminUsers = pgTable("admin_users", {
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const status = pgEnum("status", [
+  "pendingCheckout",
+  "ordered",
+  "delivered",
+]);
+
+export const usersCart = pgTable(
+  "users_cart",
+  {
+    id: text("id").notNull().primaryKey(),
+    product: text("product")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    user: text("user")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    status: status("status").$default(() => "pendingCheckout"),
+    quantity: integer("quantity")
+      .$default(() => 1)
+      .notNull(),
+  },
+  (t) => [unique().on(t.product, t.user)],
+);
