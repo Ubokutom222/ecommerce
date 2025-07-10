@@ -55,7 +55,10 @@ export function CartItem({ product, cart }: Props) {
               </Link>
             </h4>
             <h4 className="text-xl font-bold">
-              &#8358; {(product.price * cart.quantity) / 100}
+              {new Intl.NumberFormat("en-NG", {
+                style: "currency",
+                currency: "NGN",
+              }).format((product.price * cart.quantity) / 100)}
             </h4>
           </div>
           <div className="flex flex-row space-x-6">

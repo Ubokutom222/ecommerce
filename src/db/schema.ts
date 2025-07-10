@@ -116,16 +116,40 @@ export const usersCart = pgTable(
   "users_cart",
   {
     id: text("id").notNull().primaryKey(),
-    product: text("product")
+    productId: text("product_id")
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }),
-    user: text("user")
+    userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    status: status("status").$default(() => "pendingCheckout"),
     quantity: integer("quantity")
       .$default(() => 1)
       .notNull(),
+    createdAt: timestamp("created_at")
+      .$defaultFn(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    updatedAt: timestamp("updated_at")
+      .$defaultFn(() => /* @__PURE__ */ new Date())
+      .notNull(),
   },
-  (t) => [unique().on(t.product, t.user)],
+  (t) => [unique().on(t.productId, t.userId)],
 );
+
+export const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").references(() => user.id),
+  status: status("status").$default(() => "ordered"),
+  totalAmount: integer("total_amount").notNull(),
+  paystackReference: text("paystack_ref"),
+  createdAt: timestamp("created_at").$defaultFn(() => new Date()),
+});
+
+export const orderItems = pgTable("order_items", {
+  id: text("id").primaryKey(),
+  orderId: text("order_id").references(() => orders.id, {
+    onDelete: "cascade",
+  }),
+  productId: text("product_id").references(() => products.id),
+  quantity: integer("quantity").notNull(),
+  unitPrice: integer("unit_price").notNull(), // capture price at purchase
+});
