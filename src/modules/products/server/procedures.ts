@@ -43,8 +43,8 @@ const productsRouter = createTRPCRouter({
         .insert(usersCart)
         .values({
           id: nanoid(),
-          user: ctx.session.user.id,
-          product: productId,
+          userId: ctx.session.user.id,
+          productId: productId,
           quantity,
         })
         .returning();
@@ -72,8 +72,8 @@ const productsRouter = createTRPCRouter({
         .delete(usersCart)
         .where(
           and(
-            eq(usersCart.product, productId),
-            eq(usersCart.user, ctx.session.user.id),
+            eq(usersCart.productId, productId),
+            eq(usersCart.userId, ctx.session.user.id),
           ),
         )
         .returning();
