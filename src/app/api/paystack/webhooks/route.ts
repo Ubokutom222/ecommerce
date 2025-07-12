@@ -4,6 +4,7 @@ import { usersCart, orders, orderItems } from "@/db/schema";
 import db from "@/db";
 import { eq, and, InferSelectModel } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,24 +12,31 @@ export async function POST(req: NextRequest) {
     const ip = forwarded ? forwarded.split(",")[0] : "unknown";
     const allowedIps = ["52.31.139.75", "52.49.173.169", "52.214.14.220"];
 
+    // Read raw body and signature header
+    const bodyText = await req.text();
+    const incomingSig = req.headers.get("x-paystack-signature") || "";
+
+    // Compute HMAC SHA512 using your Paystack secret
+    const secret = process.env.PAYSTACK_SECRET!;
+    const expectedSig = crypto
+      .createHmac("sha512", secret)
+      .update(bodyText)
+      .digest("hex");
+
+    // Reject if signatures don’t match
+    if (incomingSig !== expectedSig) {
+      return new NextResponse("Invalid signature", { status: 400 });
+    }
+
     if (!allowedIps.includes(ip)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const body = (await req.json()) as PaystackWebhookPayload;
-
-    interface Metadata {
-      userId: string;
-      products: {
-        id: string;
-        quantity: number;
-        unitPrice: number;
-      }[];
-    }
+    const body = JSON.parse(bodyText) as PaystackWebhookPayload;
 
     switch (body.event) {
       case "charge.success":
-        const metadata = body.data.metadata as Metadata;
+        const metadata = body.data.metadata;
 
         metadata.products.map(async (item) => {
           await db
@@ -69,10 +77,6 @@ export async function POST(req: NextRequest) {
 
       case "transfer.success":
         console.log("Transfer success:", body.data);
-        break;
-
-      case "transfer.failed":
-        // log or alert
         break;
 
       default:

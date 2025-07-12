@@ -28,27 +28,20 @@ export function CartView() {
 
   useEffect(() => {
     function getTotal() {
-      let total = 0;
-      data.map((item) => {
-        const eachTotal = item.products.price * item.users_cart.quantity;
-        total += eachTotal;
-      });
-      setTotal(total);
+      const calculatedTotal = data.reduce((sum, item) => {
+        return sum + item.products.price * item.users_cart.quantity;
+      }, 0);
+      setTotal(calculatedTotal);
     }
 
     getTotal();
   }, [data]);
 
-  const metadata: Array<{ id: string; quantity: number; unitPrice: number }> =
-    [];
-
-  data.map((item) => {
-    metadata.push({
-      id: item.products.id,
-      quantity: item.users_cart.quantity,
-      unitPrice: item.products.price,
-    });
-  });
+  const metadata = data.map((item) => ({
+    id: item.products.id,
+    quantity: item.users_cart.quantity,
+    unitPrice: item.products.price,
+  }));
 
   return (
     <div className="flex flex-col h-[calc(100vh_-_4rem)] gap-6">
@@ -59,7 +52,7 @@ export function CartView() {
           ) : (
             data.map((item) => (
               <CartItem
-                key={item.products.id}
+                key={item.users_cart.id}
                 product={item.products}
                 cart={item.users_cart}
               />

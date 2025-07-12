@@ -90,7 +90,7 @@ export const products = pgTable("products", {
   previewUrl: text("preview_url"),
   productDescription: text("product_description"),
   // This stores the RichText Description rendered on the product page
-  description: text("desription"), // store as string (HTML)
+  description: text("description"), // store as string (HTML)
 });
 
 export const adminUsers = pgTable("admin_users", {

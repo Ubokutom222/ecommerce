@@ -21,7 +21,12 @@ export function ProductPageView({ productsId }: Props) {
   );
   const isMobile = useIsMobile();
   const safeHTML = DOMPurify.sanitize(data[0].products.description || "");
-  if (isMobile) return;
+  if (isMobile)
+    return (
+      <div className="flex flex-col space-y-4 p-4">
+        {/* TODO: Handle ProductPage View for mobile */}
+      </div>
+    );
   return (
     <div className="grid grid-cols-5 gap-6 text-base">
       <div className="col-span-2 ">
