@@ -7,7 +7,7 @@ interface Props {
 export default function CartLayout({ children }: Props) {
   return (
     <SessionProvider>
-      <div className="flex flex-col items-center w-screen h-screen space-x-8">
+      <div className="flex flex-col items-center w-screen h-screen">
         <Navbar />
         <div className="flex flex-col w-5/6 mt-16 ">{children}</div>
       </div>

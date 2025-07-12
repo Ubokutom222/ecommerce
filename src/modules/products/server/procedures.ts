@@ -62,12 +62,6 @@ const productsRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const { productId } = input;
 
-      if (!productId)
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Product is undefined",
-        });
-
       const response = await db
         .delete(usersCart)
         .where(
@@ -77,12 +71,6 @@ const productsRouter = createTRPCRouter({
           ),
         )
         .returning();
-
-      if (!response)
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Something went wrong",
-        });
 
       return response;
     }),

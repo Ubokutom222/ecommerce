@@ -15,6 +15,7 @@ const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  trustedOrigins: ["https://oriented-hugely-glider.ngrok-free.app"],
 });
 
 export default auth;

@@ -103,13 +103,12 @@ export function Navbar() {
           <div className="flex flex-row space-x-5">
             <Button
               className="flex flex-row items-center space-x-3"
-              variant="link"
+              variant="secondary"
               asChild
             >
               <Link href="/cart" prefetch>
                 <ShoppingCart />
-                {/* TODO: IMPLEMENT CART FUNCTIONALITY */}
-                &#8358; 25,000
+                Cart
               </Link>
             </Button>
             <DropdownMenu>

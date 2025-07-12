@@ -106,7 +106,7 @@ export function CartItem({ product, cart }: Props) {
             </Button>
           </div>
           <p className="text-lg text-muted-foreground">
-            Delivery on 13 Nov, 2025
+            Delivery within 3-5 business days
           </p>
         </div>
       </div>
