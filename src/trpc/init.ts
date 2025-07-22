@@ -34,3 +34,18 @@ export const protectedProcedure = t.procedure.use(async (req) => {
     },
   });
 });
+
+export const adminProcedure = t.procedure.use(async (req) => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) throw new TRPCError({ code: "UNAUTHORIZED" });
+  const { role } = session.user;
+  if (role !== "admin" && role !== "vendor")
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  return req.next({
+    ctx: {
+      session,
+    },
+  });
+});
