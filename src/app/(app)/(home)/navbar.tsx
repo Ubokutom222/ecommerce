@@ -71,7 +71,7 @@ export function Navbar() {
         ))}
       </div>
 
-      <div className="hidden lg:flex">
+      <div className="hidden h-full lg:flex">
         <Button
           variant="secondary"
           asChild
@@ -88,10 +88,10 @@ export function Navbar() {
         </Button>
       </div>
 
-      <div className="flex lg:hidden items-center justify-center">
+      <div className="flex items-center justify-center lg:hidden">
         <Button
           variant="ghost"
-          className="size-12 border-transparent"
+          className="border-transparent size-12"
           onClick={() => setIsSidebarOpen(true)}
         >
           <MenuIcon />
