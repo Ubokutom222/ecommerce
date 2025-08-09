@@ -1,4 +1,8 @@
 "use client";
+import type {
+  SingleCategoryGetManyOutput,
+  CategoriesGetManyOutput,
+} from "@/modules/categories/types";
 import { CustomCategory } from "../types";
 import {
   Sheet,
@@ -10,15 +14,18 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  data: CustomCategory[]; // TODO: Remove this later
 }
 
-export function CategoriesSidebar({ open, onOpenChange, data }: Props) {
+export function CategoriesSidebar({ open, onOpenChange }: Props) {
   const router = useRouter();
+  const trpc = useTRPC();
+  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
   const [parentCategories, setParentCategories] = useState<
     CustomCategory[] | null
   >(null);
