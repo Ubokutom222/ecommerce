@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { useDropdownPosition } from "./use-dropdown-position";
 import { SubCategoryMenu } from "./subcategory-menu";
-import { CustomCategory } from "../types";
+import type { SingleCategoryGetManyOutput } from "@/modules/categories/types";
 import Link from "next/link";
 
 interface Props {
-  category: CustomCategory;
+  category: SingleCategoryGetManyOutput;
   isActive?: boolean;
   isNavigationHovered?: boolean;
 }
